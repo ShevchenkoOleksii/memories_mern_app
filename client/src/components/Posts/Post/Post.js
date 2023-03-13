@@ -4,21 +4,23 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 
 import useStyles from "./styles";
+import {deletePost} from "../../../actions/posts";
 
-
-const Post = ({ post }) => {
-
+const Post = ({ post, setCurrentId }) => {
+  const { selectedFile, title, creator, createdAt,tags, message, likeCount, _id } = post;
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const { selectedFile, title, creator, createdAt,tags, message, likeCount } = post;
 
   return (
     <Card className={classes.card}>
       <CardMedia
-        className={classes.media}
         image={selectedFile}
+        className={classes.media}
         title={title}
+        component={'div'}
       />
       <div className={classes.overlay}>
         <Typography variant={'h6'}>{creator}</Typography>
@@ -28,9 +30,9 @@ const Post = ({ post }) => {
         <Button
           style={{ color: 'white' }}
           size={'small'}
-          onClick={() => {}}
+          onClick={() => setCurrentId(_id)}
         >
-          <MoreHorizIcon fontSize={'default'} />
+          <MoreHorizIcon fontSize={'medium'} />
         </Button>
       </div>
       <div className={classes.details}>
@@ -41,9 +43,15 @@ const Post = ({ post }) => {
           {tags.map((tag) => `#${tag} `)}
         </Typography>
       </div>
+      <Typography
+        className={classes.title}
+        variant={'h5'}
+        gutterBottom
+      >
+        {title}
+      </Typography>
       <CardContent>
         <Typography
-          className={classes.title}
           variant={'h5'}
           gutterBottom
         >
@@ -63,7 +71,7 @@ const Post = ({ post }) => {
         <Button
           size={'small'}
           color={'primary'}
-          onClick={() => {}}
+          onClick={() => dispatch(deletePost(_id))}
         >
           <DeleteIcon fontSize={'small'} />
           Delete
