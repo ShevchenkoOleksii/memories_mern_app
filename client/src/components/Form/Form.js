@@ -14,7 +14,9 @@ const Form = ({ currentId, setCurrentId }) => {
     tags: '',
     selectedFile: '',
   });
-  const post = useSelector((state) => currentId ? state.posts.find(({ _id }) => _id === currentId) : null);
+  const post = useSelector((state) => (
+    currentId ? state.posts.find(({ _id }) => _id === currentId) : null
+  ));
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -85,7 +87,7 @@ const Form = ({ currentId, setCurrentId }) => {
           label={'Tags'}
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, [e.target.name]: e.target.value })}
+          onChange={(e) => setPostData({ ...postData, [e.target.name]: e.target.value.split(', ') })}
         />
         <div className={classes.fileInput}>
           <FileBase
